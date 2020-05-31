@@ -14,9 +14,11 @@ jobs:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
     steps:
       - uses: actions/checkout@v2
-      - name: Install dependencies
+      - name: Install OS dependencies
         run: sudo apt-get install -y bats curl
+      - name: Install Python dependencies
+        run: sudo pip install -r requirements.txt -r requirements-dev.txt
       - name: Run linters
         run: make lint
       - name: Run the tests
-        run: make tests
+        run: make test
