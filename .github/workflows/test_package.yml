@@ -20,5 +20,7 @@ jobs:
         run: sudo pip3 install -r requirements.txt -r requirements-dev.txt
       - name: Run linters
         run: make lint
+      - name: Build image
+        run: make build
       - name: Run the tests
         run: make test

@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 
-DOCKER="${DOCKER:-docker}"
+DOCKER_COMPOSE="${DOCKER_COMPOSE:-docker-compose}"
 IMAGE="${IMAGE:-diogenes1oliveira/proxiable}"
 CONTAINER_NAME="proxiable-$(uuidgen)"
 
@@ -11,13 +11,15 @@ REPLACEMENTS=(
 
 function setup {
   export TMPDIR="$(mktemp -d)"
+  export PROXIABLE_SITES_LOCATION="${TMPDIR}"
   setup-replacements
   startup
 }
 
 function teardown {
   rm -rf "${TMPDIR}"
-  ${DOCKER} rm -fv "${CONTAINER_NAME}"
+  ${DOCKER_COMPOSE} kill
+  ${DOCKER_COMPOSE} rm -f -v
 }
 
 function setup-replacements {
@@ -31,7 +33,7 @@ function setup-replacements {
 }
 
 function startup {
-  ${DOCKER} run -d --name "${CONTAINER_NAME}" -p 8000:8000 -p 8001:8001 "${IMAGE}"
+  ${DOCKER_COMPOSE} up -d
   export http_proxy="http://localhost:8000/"
   export https_proxy="${http_proxy}"
   export HTTP_PROXY="${http_proxy}"
