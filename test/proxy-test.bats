@@ -1,7 +1,5 @@
 #!/usr/bin/env bats
 
-set -euo pipefail
-
 DOCKER="${DOCKER:-docker}"
 IMAGE="${IMAGE:-diogenes1oliveira/proxiable}"
 CONTAINER_NAME="proxiable-$(uuidgen)"
