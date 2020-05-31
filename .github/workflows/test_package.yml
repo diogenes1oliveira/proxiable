@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install OS dependencies
-        run: sudo apt-get install -y bats curl python3-pip
+        run: sudo apt-get install -y bats curl python3-pip python3-setuptools
       - name: Install Python dependencies
         run: sudo pip3 install -r requirements.txt -r requirements-dev.txt
       - name: Run linters
