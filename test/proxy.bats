@@ -5,21 +5,22 @@ IMAGE="${IMAGE:-diogenes1oliveira/proxiable}"
 CONTAINER_NAME="proxiable-$(uuidgen)"
 
 REPLACEMENTS=(
-  nginx.com/nginx.png
+  nginx.org/nginx.png
   www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png
 )
 
 function setup {
   export TMPDIR="$(mktemp -d)"
   export PROXIABLE_SITES_LOCATION="${TMPDIR}"
+  export CACERT="${TMPDIR}/ca.pem"
   setup-replacements
   startup
 }
 
 function teardown {
   rm -rf "${TMPDIR}"
-  ${DOCKER_COMPOSE} kill
-  ${DOCKER_COMPOSE} rm -f -v
+  ${DOCKER_COMPOSE} kill 2> /dev/null > /dev/null
+  ${DOCKER_COMPOSE} rm -f -v 2> /dev/null > /dev/null
 }
 
 function setup-replacements {
@@ -28,12 +29,10 @@ function setup-replacements {
     mkdir -p "${TMPDIR}/$( dirname "${r}" )"
     echo -n "${checksum}" > "${TMPDIR}/${r}"
   done
-
-  find "${TMPDIR}" -type f >&3
 }
 
 function startup {
-  ${DOCKER_COMPOSE} up -d
+  ${DOCKER_COMPOSE} up -d 2> /dev/null > /dev/null
   export http_proxy="http://localhost:8000/"
   export https_proxy="${http_proxy}"
   export HTTP_PROXY="${http_proxy}"
@@ -41,7 +40,7 @@ function startup {
 
   i=0
 
-  while ! curl -fSL 'https://www.google.com'; do
+  while ! curl --cacert "${CACERT}" -fSL 'https://www.google.com' > /dev/null; do
     i="$((i+1))"
     if [ "${i}" -gt 5 ]; then
       echo "Failed getting Google through the proxy" >&2
@@ -54,7 +53,7 @@ function startup {
 @test 'HTTP requests are being replaced' {
   for r in "${REPLACEMENTS[@]}"; do
     checksum="$( echo -n "${r}" | sha256sum | awk '{ print $1 }' )"
-    if ! ( curl "http://${r}" | grep "${checksum}" ) ; then
+    if ! ( curl --cacert "${CACERT}" -qvL "https://${r}" | grep -s "${checksum}" ) ; then
       echo "failed getting ${r}" >&2
       curl -v "http://${r}" >&2
       return 1
