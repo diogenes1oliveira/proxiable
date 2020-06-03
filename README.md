@@ -12,8 +12,18 @@ You can use the image directly from [Docker Hub](https://hub.docker.com/),
 binding the ports from `mitmweb`:
 
 ```
-docker run -n proxiable --rm -d diogenes1oliveira/proxiable
+docker run -n proxiable --rm -d \
+     -p 8000:8000 -p 8001:8001 \
+     -v "$PWD/sites:/var/proxiable/sites" \
+     -v "$PWD/certs:/var/proxiable/certs" \
+     diogenes1oliveira/proxiable
 ```
+
+The intercepting certificate will be available in `certs/ca.pem`. You can also
+put your own certificate bundle in the path above instead of letting `mitmproxy`
+generate one.
+
+The HTTP/HTTPS proxy will be available at `http://localhost:8000`.
 
 ## Directory Structure
 
@@ -41,17 +51,7 @@ sites/
                          └─── googlelogo_color_272x92dp.png
 ```
 
-## Usage
-
-You can run it using Docker as:
-
-```
-
-docker run --rm -p 8000 -p 8001
-
-```
-
-The HTTP proxy will then run in port 8000 and the WebUI in port 8001.
+## Configuration
 
 | Variable               | Default   | Description                                      |
 | ---------------------- | --------- | ------------------------------------------------ |
@@ -61,6 +61,3 @@ The HTTP proxy will then run in port 8000 and the WebUI in port 8001.
 | `PROXIABLE_WEBUI_HOST` | `8001`    | Port the WebUI listens on                        |
 | `PROXIABLE_INDEX_FILE` | `INDEX`   | File to be looked up when the path ends with `/` |
 
-```
-
-```
