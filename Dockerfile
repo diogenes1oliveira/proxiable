@@ -26,13 +26,15 @@ ENV PROXIABLE_WEBUI_HOST="0.0.0.0"
 ENV PROXIABLE_WEBUI_PORT="8001"
 ENV PROXIABLE_PROXY_HOST="0.0.0.0"
 ENV PROXIABLE_PROXY_PORT="8000"
-ENV PROXIABLE_SCRIPTS_LOCATION="/var/proxiable/scripts/"
-ENV PROXIABLE_SITES_LOCATION="/var/proxiable/sites/"
+ENV PROXIABLE_SCRIPTS_LOCATION="/var/proxiable/scripts"
+ENV PROXIABLE_SITES_LOCATION="/var/proxiable/sites"
+ENV PROXIABLE_CERTS_LOCATION="/var/proxiable/certs"
 ENV PROXIABLE_INDEX_FILE="INDEX"
 
 WORKDIR /root/.mitmproxy/
 WORKDIR /var/proxiable/scripts/
 WORKDIR /var/proxiable/sites/
+WORKDIR /var/proxiable/certs/
 
 CMD [ "mitmweb" ]
 

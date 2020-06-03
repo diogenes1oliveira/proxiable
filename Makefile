@@ -29,3 +29,7 @@ rm:
 	@$(DOCKER_COMPOSE) rm -f -v
 	@$(DOCKER) network prune -f
 	@$(DOCKER) volume prune -f
+
+.PHONY: logs
+logs:
+	@$(DOCKER_COMPOSE) logs -f

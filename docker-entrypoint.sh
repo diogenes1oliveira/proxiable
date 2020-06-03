@@ -45,8 +45,18 @@ if [ -d "${PROXIABLE_SCRIPTS_LOCATION}" ]; then
   done
 fi
 
-if [ -f '/var/proxiable/ca.pem' ] && ! [ -e '/root/.mitmproxy/mitmproxy-ca.pem' ]; then
-  ln -s '/var/proxiable/ca.pem' '/root/.mitmproxy/mitmproxy-ca.pem'
+function copy-cert {
+  while ! grep -q -- '-----END CERTIFICATE-----' "${PROXIABLE_CERTS_LOCATION}/ca.pem" 2> /dev/null; do
+    sleep 1
+
+    cat '/root/.mitmproxy/mitmproxy-ca.pem' > "${PROXIABLE_CERTS_LOCATION}/ca.pem"
+  done
+}
+
+if [ -f "${PROXIABLE_CERTS_LOCATION}/ca.pem" ]; then
+  ln -s "${PROXIABLE_CERTS_LOCATION}/ca.pem" '/root/.mitmproxy/mitmproxy-ca.pem'
+else
+  copy-cert &
 fi
 
 cmd+=( "$@" )
