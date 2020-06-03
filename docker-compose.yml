@@ -1,0 +1,18 @@
+---
+version: "3.6"
+
+services:
+  app:
+    image: diogenes1oliveira/proxiable
+    environment:
+      PROXIABLE_PROXY_HOST: "${PROXIABLE_PROXY_HOST:-0.0.0.0}"
+      PROXIABLE_PROXY_PORT: "${PROXIABLE_PROXY_PORT:-8000}"
+      PROXIABLE_WEBUI_HOST: "${PROXIABLE_WEBUI_HOST:-0.0.0.0}"
+      PROXIABLE_WEBUI_PORT: "${PROXIABLE_WEBUI_PORT:-8001}"
+      PROXIABLE_SITES_LOCATION: /var/proxiable/sites
+      PROXIABLE_CERTS_LOCATION: /var/proxiable/sites
+    ports:
+      - "${PROXIABLE_PROXY_PORT:-8000}:${PROXIABLE_PROXY_PORT:-8000}"
+      - "${PROXIABLE_WEBUI_PORT:-8001}:${PROXIABLE_WEBUI_PORT:-8001}"
+    volumes:
+      - "${PROXIABLE_SITES_LOCATION:-./sites}:/var/proxiable/sites"
