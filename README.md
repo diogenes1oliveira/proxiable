@@ -12,7 +12,7 @@ You can use the image directly from [Docker Hub](https://hub.docker.com/),
 binding the ports from `mitmweb`:
 
 ```
-docker run -n proxiable --rm -d \
+docker run --name proxiable --rm -d \
      -p 8000:8000 -p 8001:8001 \
      -v "$PWD/sites:/var/proxiable/sites" \
      -v "$PWD/certs:/var/proxiable/certs" \
