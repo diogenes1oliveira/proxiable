@@ -23,7 +23,11 @@ The intercepting certificate will be available in `certs/ca.pem`. You can also
 put your own certificate bundle in the path above instead of letting `mitmproxy`
 generate one.
 
-The HTTP/HTTPS proxy will be available at `http://localhost:8000`.
+The HTTP/HTTPS proxy will be available at `http://localhost:8000`. Remember
+to:
+
+- Install the custom certificate authority;
+- Set the HTTP and HTTPS proxy to the address above.
 
 ## Directory Structure
 
@@ -60,4 +64,3 @@ sites/
 | `PROXIABLE_WEBUI_HOST` | `0.0.0.0` | Host the WebUI listens to                        |
 | `PROXIABLE_WEBUI_HOST` | `8001`    | Port the WebUI listens on                        |
 | `PROXIABLE_INDEX_FILE` | `INDEX`   | File to be looked up when the path ends with `/` |
-
