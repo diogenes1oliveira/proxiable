@@ -23,6 +23,15 @@ The intercepting certificate will be available in `certs/ca.pem`. You can also
 put your own certificate bundle in the path above instead of letting `mitmproxy`
 generate one.
 
+There is also a `Makefile` available in the repository root. With it, starting
+and removing can be done such as:
+
+```sh
+cd proxiable/
+make up   # start the proxy
+make rm   # shutdown the proxy
+```
+
 The HTTP/HTTPS proxy will be available at `http://localhost:8000`. Remember
 to:
 
